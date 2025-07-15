@@ -1,0 +1,26 @@
+movie_id,movie_title,algorithm,time,recommendations,gemini_2_5_pro,o3_pro,grok_4,cloude_3_7
+278,The Shawshank Redemption,Composite Ranking,41.6913,"If Tomorrow Comes, Kiss of Death, Fantômas: Juve Against Fantômas, Borderline, Baran, Love the Hard Way",2.5,2.5,1.9,2.3
+278,The Shawshank Redemption,Embedding Similarity,6.9744,"Prison, Inside, Buried Alive, The Quare Fellow, Animal Factory, San Quentin",5.0,4.2,3.9,4.5
+278,The Shawshank Redemption,Genre Similarity,0.0886,"The Keepers, Shimmer Lake, Aprel, The Avenue, Partners: The Movie II, Chapter & Verse",1.5,2.2,2.3,2.2
+278,The Shawshank Redemption,Overview Similarity,1.3123,"They Made Me a Fugitive, Civil Brand, In Hell, Women's Prison, Seven Times Seven, Female Prisoner Scorpion: Jailhouse 41",4.0,4.0,3.5,4.1
+278,The Shawshank Redemption,Title Overlap,0.7299,"24: Redemption, Redemption: The Stan Tookie Williams Story, Undisputed III : Redemption, Kickboxer 5: The Redemption, Road to Redemption, Redemption Road",0.0,1.8,2.8,1.5
+603,The Matrix,Composite Ranking,41.7469,"Mad Max: Fury Road, Hell Comes to Frogtown, The Phantom, Latitude Zero, Exterminators of the Year 3000, Underground: The Julian Assange Story",3.0,2.8,2.5,2.0
+603,The Matrix,Embedding Similarity,7.0218,"The Matrix Revolutions, The Matrix Reloaded, The Matrix Revisited, The Animatrix, Kid's Story, A Detective Story",5.0,4.8,5.0,4.5
+603,The Matrix,Genre Similarity,0.0836,"Firebase, Rakka, Moontrap: Target Earth, Major Grom, Lone Wolves, Drone Wars",2.0,2.5,3.4,1.8
+603,The Matrix,Overview Similarity,1.1659,"A Detective Story, Kid's Story, World Record, Algorithm, Hackers, Commando",4.8,3.2,4.1,3.6
+603,The Matrix,Title Overlap,0.6453,"The Matrix Reloaded, The Matrix Revolutions, The Matrix Revisited, Armitage: Dual Matrix, Return to Source: The Philosophy of The Matrix",4.5,4.7,4.9,3.0
+808,Shrek,Composite Ranking,41.4314,"Shrek 2, The Dragon Spell, Jonah: A VeggieTales Movie, Time Bandits, Wreck-It Ralph, The Emperor's New Groove",4.8,4.0,3.7,3.8
+808,Shrek,Embedding Similarity,6.8766,"Shrek Forever After, Shrek 2, Shrek the Halls, Scared Shrekless, Shrek the Third, The Princess and the Frog",5.0,4.7,4.5,4.0
+808,Shrek,Genre Similarity,0.09,"The Dragon Spell, Sheep & Wolves, The Book of Life, Scooby-Doo! Mask of the Blue Falcon, The Lego Movie, How to Train Your Dragon 2",4.5,3.2,4.0,3.1
+808,Shrek,Overview Similarity,1.2016,"Shrek 2, Shrek the Third, Scared Shrekless, Shrek Forever After, Shrek the Halls, Ogre",4.7,4.6,4.3,3.3
+808,Shrek,Title Overlap,0.6717,"Shrek 2, Shrek the Third, Shrek Forever After, Shrek the Halls",4.5,4.8,4.4,3.0
+10191,How to Train Your Dragon,Composite Ranking,41.5818,"The Dragon Spell, Dragon Ball GT: A Hero's Legacy, How to Train Your Dragon 2, The Wind in the Willows, Yogi Bear, Pokémon: The Movie 2000",4.0,3.5,3.2,3.2
+10191,How to Train Your Dragon,Embedding Similarity,7.0475,"How to Train Your Dragon 2, Legend of the BoneKnapper Dragon, Dragons: Gift of the Night Fury, DragonHeart: A New Beginning, Dragon Hunter, Adventures of a Teenage Dragonslayer",5.0,4.6,4.6,4.7
+10191,How to Train Your Dragon,Genre Similarity,0.0852,"The Dragon Spell, Over the Garden Wall, Sheep & Wolves, Hamtaro: The Captive Princess, The Snow Queen 2: Refreeze, Barbie and the Secret Door",3.5,2.6,3.9,3.5
+10191,How to Train Your Dragon,Overview Similarity,1.2578,"Dragons: Gift of the Night Fury, Legend of the BoneKnapper Dragon, How to Train Your Dragon 2, Tom and Jerry: The Lost Dragon, Dragon Nest: Warriors' Dawn, Убить дракона",4.9,4.5,4.8,4.4
+10191,How to Train Your Dragon,Title Overlap,0.7509,"How to Train Your Dragon 2, Crouching Tiger, Hidden Dragon, The Arrival of a Train at La Ciotat, Strangers on a Train, The Mummy: Tomb of the Dragon Emperor, Kiss of the Dragon",2.0,4.0,3.6,2.3
+11397,Not Another Teen Movie,Composite Ranking,41.3058,"Not Another Not Another Movie, The Hot Chick, Crossroads, Wishin' and Hopin', Amazon Women on the Moon, Is It College Yet?",4.8,3.5,4.5,3.7
+11397,Not Another Teen Movie,Embedding Similarity,6.9528,"Not Another Not Another Movie, Another Gay Movie, She's All That, Teen Beach Movie, My Big Fat Independent Movie, Teen Vamp",5.0,3.3,4.7,4.3
+11397,Not Another Teen Movie,Genre Similarity,0.0911,"Thick Lashes of Lauri Mäntyvaara, Chris D'Elia: Man on Fire, Rory Scovel Tries Stand-Up for the First Time, Cop and a Half: New Recruit, 50 Kilos of Sour Cherry, Oh, Hello: On Broadway",0.5,1.5,2.1,0.9
+11397,Not Another Teen Movie,Overview Similarity,10.0659,"Touchback, Teen Spirit, Beauty and the Boss, Don't You Forget About Me, The Substitute, Dance 'Til Dawn",4.0,1.8,3.8,2.8
+11397,Not Another Teen Movie,Title Overlap,0.5661,"Another Gay Movie, Aqua Teen Hunger Force Colon Movie Film for Theaters, Not Another Not Another Movie, Teen Beach Movie, The Simpsons Movie, Sweet Movie",3.5,3.0,4.2,2.6

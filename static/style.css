@@ -1,0 +1,307 @@
+/* Global Styles */
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background: #0e0e0e;
+  color: #f0f0f0;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('__POSTER_URL__');
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px) brightness(0.4);
+  z-index: -2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardAppear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px;
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  animation-delay: 0.2s;
+  background-color: rgba(20, 20, 20, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  color: #5dc1b9;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Search Form */
+form {
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+
+input[type="text"] {
+  font-family: 'Inter', sans-serif;
+  padding: 16px;
+  flex: 1;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  font-size: 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+input[type="text"]::placeholder {
+  color: #888;
+  font-size: 16px;
+}
+
+button {
+  padding: 16px 24px;
+  background-color: #5dc1b9;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #6ee7dc;
+}
+
+/* Filter Block */
+.filter-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filter-options select,
+.filter-options input[type="number"] {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border: 1px solid #444;
+  min-width: 160px;
+  flex: 1;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+  /* For number input to remove spinner */
+  appearance: textfield;
+}
+
+/* Remove default spinner arrows in Firefox */
+.filter-options input[type="number"]::-moz-inner-spin-button,
+.filter-options input[type="number"]::-moz-outer-spin-button {
+  -moz-appearance: none;
+  margin: 0;
+}
+
+/* Remove default spinner arrows in Chrome, Safari, Edge */
+.filter-options input[type="number"]::-webkit-inner-spin-button,
+.filter-options input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Focus/active state with rose-pink border and subtle glow */
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #e07a5f;
+  box-shadow: 0 0 5px 1px rgba(224, 122, 95, 0.4);
+}
+
+/* Loading */
+#loading {
+  margin-top: 10px;
+  color: #6ee7dc;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Results */
+.result-count {
+  margin-bottom: 20px;
+  font-weight: 500;
+  color: #ccc;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: #1b1b1b;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  text-align: center;
+  color: #f0f0f0;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.4s ease;
+  opacity: 0;
+  animation: cardAppear 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.8);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card-info {
+  font-size: 14px;
+}
+
+.year {
+  color: #bbb;
+  display: block;
+  margin-top: 4px;
+}
+
+.search-description {
+  text-align: center;
+  color: #ccc;
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeIn 1s ease;
+}
+
+.highlight {
+  font-weight: 700;
+  color: #e07a5f;
+}
+
+
+/* Film details: poster left, info right */
+.film-details {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+
+.poster-large {
+  width: 240px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.7);
+}
+
+.info {
+  flex: 1;
+  color: #f0f0f0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Tabs */
+.tabs {
+  margin-bottom: 16px;
+}
+
+.tab-button {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border: none;
+  padding: 10px 18px;
+  margin-right: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.tab-button:hover,
+.tab-button:focus {
+  background-color: #e07a5f;
+  outline: none;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+
+
+body {
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    #0e0e0e;
+}

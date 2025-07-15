@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MovieLens Explorer - Film Search</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      color: #e0e0e0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .search-description {
+      color: #b0b0b0;
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .highlight {
+      color: #64b5f6;
+      font-weight: 600;
+    }
+    .search-section {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .search-input {
+      width: 400px;
+      padding: 1rem 1.5rem;
+      font-size: 1.1em;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input::placeholder {
+      color: #888;
+    }
+    .search-input:focus {
+      border-color: #64b5f6;
+      box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+    }
+    .search-button {
+      padding: 1rem 2rem;
+      font-size: 1.1em;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .search-button:hover {
+      background: linear-gradient(135deg, #42a5f5 0%, #2196f3 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
+    }
+    .refresh-button {
+      padding: 0.5rem 1rem;
+      font-size: 0.9em;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-left: 1rem;
+      transition: all 0.2s;
+    }
+    .refresh-button:hover {
+      background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+      transform: translateY(-1px);
+    }
+    .fuzzy-tip {
+      color: #888;
+      font-size: 0.9em;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      border-color: rgba(100, 181, 246, 0.3);
+    }
+    .card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      background: #2a2a2a;
+    }
+    .card-info {
+      padding: 1rem;
+    }
+    .movie-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      font-size: 1.1em;
+    }
+    .genres {
+      display: block;
+      color: #64b5f6;
+      font-size: 0.9em;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .actors {
+      display: block;
+      color: #b0b0b0;
+      font-size: 0.85em;
+      font-style: italic;
+      line-height: 1.4;
+    }
+    .result-count {
+      text-align: center;
+      color: #b0b0b0;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .no-results {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      margin-top: 2rem;
+    }
+    .random-tip {
+      text-align: center;
+      color: #888;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+    .loading {
+      text-align: center;
+      color: #64b5f6;
+      font-weight: 600;
+      margin: 2rem 0;
+    }
+    .recommendations {
+      margin-top: 4rem;
+    }
+    .recommendation-section {
+      margin-bottom: 3rem;
+    }
+    .recommendation-section .section-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      padding-left: 1rem;
+    }
+    .pagination {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .page-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border: 1px solid #64b5f6;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+      text-decoration: none;
+      color: #ffffff;
+      transition: all 0.2s;
+      background: rgba(100, 181, 246, 0.1);
+    }
+    .page-link:hover {
+      background-color: rgba(100, 181, 246, 0.3);
+      transform: translateY(-1px);
+    }
+    .page-link.active {
+      background-color: #64b5f6;
+      border-color: #64b5f6;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .search-input { width: 100%; max-width: 300px; }
+      .card-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+      .header h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎬 Movie Explorer</h1>
+    </div>
+
+    <div class="search-section">
+      <form action="/search" method="get" id="searchForm">
+        <div class="search-bar">
+          <input 
+            type="text" 
+            name="query" 
+            value="{{ query }}" 
+            placeholder="Enter film title" 
+            class="search-input"
+            autofocus 
+          />
+          <button type="submit" class="search-button">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+      🔍 Searching for movies...
+    </div>
+
+    {% if results %}
+      {% if query %}
+        <div class="result-count">
+          {{ results|length }} result{{ results|length == 1 and '' or 's' }} found for "{{ query }}"
+          {% if total_count > 8 %} (showing {{ (page - 1) * 8 + 1 }}-{{ (page - 1) * 8 + results|length }} of {{ total_count }}){% endif %}
+        </div>
+      {% endif %}
+      
+      <!-- Main results grid -->
+      <div class="card-grid">
+        {% for movie in results %}
+          <a class="card" href="/film/{{ movie.id }}">
+            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+            <div class="card-info">
+              <div class="movie-title">{{ movie.title }}</div>
+              {% if movie.genres %}
+                <span class="genres">{{ movie.genres }}</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      
+      <!-- Pagination -->
+      {% if total_pages > 1 %}
+        <div class="pagination">
+          {% if page > 1 %}
+            <a href="/search?{% if query %}query={{ query }}&{% endif %}page={{ page - 1 }}" class="page-link">← Previous</a>
+          {% endif %}
+          
+          {% for p in range(max(1, page - 2), min(total_pages + 1, page + 3)) %}
+            {% if p == page %}
+              <span class="page-link active">{{ p }}</span>
+            {% else %}
+              <a href="/search?{% if query %}query={{ query }}&{% endif %}page={{ p }}" class="page-link">{{ p }}</a>
+            {% endif %}
+          {% endfor %}
+          
+          {% if page < total_pages %}
+            <a href="/search?{% if query %}query={{ query }}&{% endif %}page={{ page + 1 }}" class="page-link">Next →</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% elif query %}
+      <div class="no-results">
+        No results found for "{{ query }}"<br>
+        Try a different search term or check your spelling.
+      </div>
+    {% endif %}
+
+    <!-- Recommendation sections for landing page ONLY -->
+    <!-- DEBUG: is_landing={{ is_landing }}, recommendations={{ recommendations is not none }}, query='{{ query }}' -->
+    {% if is_landing == true and recommendations is not none %}
+      <div class="recommendations">
+        <!-- DEBUG: Showing recommendations because is_landing=true and recommendations is not none -->
+        <div class="recommendation-section">
+          <h2 class="section-title">🎲 Random Picks</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.random %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">⭐ Algo 1 - Highly Rated</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.algo1 %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">🆕 Algo 2 - Recent Releases</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.algo2 %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">💥 Algo 3 - Title Overlap</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.algo3 %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">🎭 Algo 4 - Genre similarity</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.algo4 %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">🌟 Algo 5 - Star-Studded</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.algo5 %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    // Cache bust: {{ range(1, 1000) | random }}
+    const form = document.getElementById('searchForm');
+    const loading = document.getElementById('loading');
+    
+    form.addEventListener('submit', () => {
+      loading.style.display = 'block';
+    });
+    
+    // Auto-focus search input
+    document.querySelector('.search-input').focus();
+  </script>
+</body>
+</html>

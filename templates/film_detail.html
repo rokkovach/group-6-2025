@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ film.title }} - MovieLens Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      color: #e0e0e0;
+    }
+    body::before {
+      background-image: url('{{ film.poster_url }}');
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -2;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      background: linear-gradient(120deg, rgba(26,26,46,0.9) 60%, rgba(22,33,62,0.7) 100%);
+      pointer-events: none;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .page-header h1 {
+      color: #ffffff;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .back-link {
+      display: inline-block;
+      color: #64b5f6;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #42a5f5;
+    }
+    .film-details {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      align-items: flex-start;
+    }
+    .poster-large {
+      width: 300px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .info {
+      flex: 1;
+      color: #e0e0e0;
+    }
+    .overview {
+      margin: 1.5rem 0;
+      line-height: 1.7;
+      color: #b0b0b0;
+      font-size: 1.1em;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #64b5f6;
+    }
+    .actors {
+      margin: 1.5rem 0;
+      color: #b0b0b0;
+      font-size: 1em;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .rating {
+      font-weight: bold;
+      color: #ff6b6b;
+      font-size: 1.1em;
+    }
+    .movie-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      font-size: 1.2em;
+    }
+    .genres {
+      display: block;
+      color: #64b5f6;
+      font-size: 0.98em;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .section-title {
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 2rem 0 1rem 0;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      border-color: rgba(100, 181, 246, 0.3);
+    }
+    .card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      background: #2a2a2a;
+    }
+    .card-info {
+      padding: 1rem;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .info-row {
+      margin: 1rem 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #64b5f6;
+      margin-bottom: 0.25rem;
+    }
+    .info-value {
+      color: #e0e0e0;
+    }
+    .recommendations {
+      margin-top: 4rem;
+    }
+    .recommendation-section {
+      margin-bottom: 3rem;
+    }
+    .recommendation-section .section-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      padding-left: 1rem;
+    }
+    @media (max-width: 768px) {
+      .film-details { flex-direction: column; align-items: stretch; }
+      .poster-large { width: 100%; max-width: 320px; margin: 0 auto; }
+      .container { padding: 1rem; }
+      .page-header h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <a href="/search" class="back-link">← Back to Search</a>
+      <h1>{{ film.title }}</h1>
+    </div>
+    
+    <div class="film-details">
+      <img src="{{ film.poster_url }}" alt="{{ film.title }} poster" class="poster-large">
+      <div class="info">
+        {% if film.overview %}
+        <div class="overview">
+          <h3>Overview</h3>
+          <p>{{ film.overview }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="info-row">
+          <div class="info-label">Genres</div>
+          <div class="info-value">{{ film.genres if film.genres else 'Not specified' }}</div>
+        </div>
+        
+        {% if film.actors %}
+        <div class="info-row">
+          <div class="info-label">Cast</div>
+          <div class="info-value">{{ film.actors }}</div>
+        </div>
+        {% endif %}
+        
+        {% if film.release_date %}
+        <div class="info-row">
+          <div class="info-label">Release Date</div>
+          <div class="info-value">{{ film.release_date }}</div>
+        </div>
+        {% endif %}
+        
+        {% if film.average_rating %}
+        <div class="info-row">
+          <div class="info-label">Rating</div>
+          <div class="info-value">
+            <span class="rating">{{ "%.1f"|format(film.average_rating) }}/5.0</span> 
+            ({{ film.vote_count }} votes)
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Recommendation sections for film detail page -->
+    {% if recommendations %}
+      <div class="recommendations">
+        <div class="recommendation-section">
+          <h2 class="section-title">Random Picks</h2>
+          <div class="card-grid">
+            {% for movie in recommendations.random %}
+              <a class="card" href="/film/{{ movie.id }}">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                <div class="card-info">
+                  <div class="movie-title">{{ movie.title }}</div>
+                  {% if movie.genres %}
+                    <span class="genres">{{ movie.genres }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">Algorithm 1 - Similarity</h2>
+          <div class="card-grid">
+            {% if recommendations.algo1 and recommendations.algo1|length > 0 %}
+              {% for movie in recommendations.algo1 %}
+                <a class="card" href="/film/{{ movie.id }}">
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                  <div class="card-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    {% if movie.genres %}
+                      <span class="genres">{{ movie.genres }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <p>No recommendations</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">Algorithm 2 - Composite Rating</h2>
+          <div class="card-grid">
+            {% if recommendations.algo2 and recommendations.algo2|length > 0 %}
+              {% for movie in recommendations.algo2 %}
+                <a class="card" href="/film/{{ movie.id }}">
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                  <div class="card-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    {% if movie.genres %}
+                      <span class="genres">{{ movie.genres }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <p>No recommendations</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">Algorithm 3 - Title overlap</h2>
+          <div class="card-grid">
+            {% if recommendations.algo3 and recommendations.algo3|length > 0 %}
+              {% for movie in recommendations.algo3 %}
+                <a class="card" href="/film/{{ movie.id }}">
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                  <div class="card-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    {% if movie.genres %}
+                      <span class="genres">{{ movie.genres }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <p>No recommendations</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">Algorithm 4 - Genre similarity</h2>
+          <div class="card-grid">
+            {% if recommendations.algo4 and recommendations.algo4|length > 0 %}
+              {% for movie in recommendations.algo4 %}
+                <a class="card" href="/film/{{ movie.id }}">
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                  <div class="card-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    {% if movie.genres %}
+                      <span class="genres">{{ movie.genres }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <p>No recommendations</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="recommendation-section">
+          <h2 class="section-title">Algorithm 5 - Open AI Embedding</h2>
+          <div class="card-grid">
+            {% if recommendations.algo5 and recommendations.algo5|length > 0 %}
+              {% for movie in recommendations.algo5 %}
+                <a class="card" href="/film/{{ movie.id }}">
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster">
+                  <div class="card-info">
+                    <div class="movie-title">{{ movie.title }}</div>
+                    {% if movie.genres %}
+                      <span class="genres">{{ movie.genres }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endfor %}
+            {% else %}
+              <p>No recommendations</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
